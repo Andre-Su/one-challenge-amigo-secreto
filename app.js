@@ -19,7 +19,7 @@ const inputAmigo = document.getElementById("amigo");
 const viewListaAmigos = document.getElementById("listaAmigos");
 const viewResultado = document.getElementById("resultado");
 
-let arrayAmigos = [];
+let amigos = [];
 let arrayAmigosSorteados = [];
 
 /**
@@ -27,48 +27,51 @@ let arrayAmigosSorteados = [];
  * */
 function adicionarAmigo() {
     let texto = inputAmigo.value;
-    if (arrayAmigos.includes(texto)) {
+    if (amigos.includes(texto)) {
         alert("Já existe este nome na lista!");
         return;
     } 
     if (texto === "") {
-        alert("O nome não pode estar vazio!");
+        alert("Por favor, insira um nome.");
         return;
     }
-    arrayAmigos.push(texto);
-    console.log(arrayAmigos);
-    inserirNaLista(texto, viewListaAmigos);
+    amigos.push(texto);
+    inputAmigo.value = "";
+    inserirNaLista(amigos, viewListaAmigos);
 }
 
 /**
  * Sorteia um item da lista e retorna no elemento de resultado
  * */
 function sortearAmigo() {
-    if (arrayAmigos.length === 0) {
+    if (amigos.length === 0) {
         alert("A lista está vazia!");
         return;
     }
-    let indexSorteado = gerarNumero(arrayAmigos.length);
-    let amigoSorteado = arrayAmigos[indexSorteado];
+    let indexSorteado = gerarNumero(amigos.length);
+    let amigoSorteado = amigos[indexSorteado];
 
-    if (!arrayAmigosSorteados.includes(arrayAmigos[indexSorteado])){
+    if (!arrayAmigosSorteados.includes(amigos[indexSorteado])){
         arrayAmigosSorteados.push(amigoSorteado);
-        inserirNaLista(amigoSorteado, viewResultado);
+        inserirNaLista(arrayAmigosSorteados, viewResultado);
     }
     console.log(arrayAmigosSorteados);
 }
 
-function inserirNaLista(texto, lista) {
-    let itemLista = document.createElement("li");
-    itemLista.textContent = texto;
-    lista.appendChild(itemLista);
+function inserirNaLista(array, lista) {
+    lista.innerHTML = "";
+    for (let i = 0; i < array.length; i++){
+        let itemLista = document.createElement("li");
+        itemLista.textContent = array[i];
+        lista.appendChild(itemLista);
+    }
 }
 
 /**
  * Retona um valor pseudoaleatório entre 0 (inclusivo) e o numero máximo enviado como parâmetro (exclusivo)
- * @param {number} max 
+ * @param {number} array 
  * @returns {number}
  */
-function gerarNumero(max) {
-    return parseInt(Math.random() * max);
+function gerarNumero(array) {
+    return Math.floor(Math.random() * array.length);
 }
